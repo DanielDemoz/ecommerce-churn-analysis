@@ -43,6 +43,56 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
+def create_demo_data_inline():
+    """Create demo e-commerce churn dataset inline"""
+    np.random.seed(42)
+    n_customers = 1000
+    
+    # Generate demo data
+    data = {
+        'CustomerID': range(50001, 50001 + n_customers),
+        'Churn': np.random.choice([0, 1], n_customers, p=[0.8, 0.2]),
+        'Tenure': np.random.exponential(12, n_customers).astype(int),
+        'PreferredLoginDevice': np.random.choice(['Mobile Phone', 'Computer', 'Phone'], n_customers, p=[0.5, 0.3, 0.2]),
+        'CityTier': np.random.choice([1, 2, 3], n_customers, p=[0.4, 0.4, 0.2]),
+        'WarehouseToHome': np.random.normal(15, 8, n_customers).astype(int),
+        'PreferredPaymentMode': np.random.choice(['Debit Card', 'Credit Card', 'Cash on Delivery', 'E wallet', 'UPI'], n_customers, p=[0.4, 0.2, 0.15, 0.15, 0.1]),
+        'Gender': np.random.choice(['Male', 'Female'], n_customers, p=[0.6, 0.4]),
+        'HourSpendOnApp': np.random.choice([1, 2, 3, 4, 5], n_customers, p=[0.1, 0.2, 0.4, 0.2, 0.1]),
+        'NumberOfDeviceRegistered': np.random.choice([1, 2, 3, 4, 5, 6], n_customers, p=[0.1, 0.2, 0.3, 0.25, 0.1, 0.05]),
+        'PreferedOrderCat': np.random.choice(['Laptop & Accessory', 'Mobile', 'Mobile Phone', 'Fashion', 'Grocery', 'Others'], n_customers, p=[0.35, 0.2, 0.15, 0.15, 0.1, 0.05]),
+        'SatisfactionScore': np.random.choice([1, 2, 3, 4, 5], n_customers, p=[0.1, 0.15, 0.3, 0.3, 0.15]),
+        'MaritalStatus': np.random.choice(['Married', 'Single', 'Divorced'], n_customers, p=[0.55, 0.35, 0.1]),
+        'NumberOfAddress': np.random.choice([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], n_customers, p=[0.2, 0.25, 0.2, 0.15, 0.1, 0.05, 0.02, 0.02, 0.005, 0.005]),
+        'Complain': np.random.choice([0, 1], n_customers, p=[0.7, 0.3]),
+        'OrderAmountHikeFromlastYear': np.random.normal(15, 3, n_customers).astype(int),
+        'CouponUsed': np.random.choice([0, 1, 2, 3, 4, 5], n_customers, p=[0.2, 0.3, 0.25, 0.15, 0.08, 0.02]),
+        'OrderCount': np.random.poisson(8, n_customers),
+        'DaySinceLastOrder': np.random.exponential(10, n_customers).astype(int),
+        'CashbackAmount': np.random.normal(20, 10, n_customers).astype(int)
+    }
+    
+    # Create DataFrame
+    df = pd.DataFrame(data)
+    
+    # Add some realistic correlations
+    # Customers with low satisfaction are more likely to churn
+    df.loc[df['SatisfactionScore'] <= 2, 'Churn'] = np.random.choice([0, 1], len(df[df['SatisfactionScore'] <= 2]), p=[0.3, 0.7])
+    
+    # Customers with complaints are more likely to churn
+    df.loc[df['Complain'] == 1, 'Churn'] = np.random.choice([0, 1], len(df[df['Complain'] == 1]), p=[0.4, 0.6])
+    
+    # Customers with short tenure are more likely to churn
+    df.loc[df['Tenure'] <= 6, 'Churn'] = np.random.choice([0, 1], len(df[df['Tenure'] <= 6]), p=[0.5, 0.5])
+    
+    # Ensure positive values for certain columns
+    df['WarehouseToHome'] = np.maximum(df['WarehouseToHome'], 5)
+    df['OrderAmountHikeFromlastYear'] = np.maximum(df['OrderAmountHikeFromlastYear'], 10)
+    df['CashbackAmount'] = np.maximum(df['CashbackAmount'], 0)
+    df['DaySinceLastOrder'] = np.maximum(df['DaySinceLastOrder'], 1)
+    
+    return df
+
 @st.cache_data
 def load_data():
     """Load and preprocess the e-commerce dataset"""
@@ -54,15 +104,13 @@ def load_data():
         try:
             df = pd.read_csv("E Commerce Dataset.csv")
         except:
-            # If no dataset is available, create demo data
-            st.warning("⚠️ No dataset found. Creating demo data for demonstration purposes...")
+            # If no dataset is available, create demo data inline
+            st.warning("No dataset found. Creating demo data for demonstration purposes...")
             try:
-                import subprocess
-                subprocess.run(["python", "create_demo_data.py"], check=True)
-                df = pd.read_excel("E Commerce Dataset.xlsx")
-                st.success("✅ Demo dataset created successfully!")
-            except:
-                st.error("❌ Could not create demo data. Please ensure the dataset file is available.")
+                df = create_demo_data_inline()
+                st.success("Demo dataset created successfully!")
+            except Exception as e:
+                st.error(f"Could not create demo data: {str(e)}")
                 return None
     
     # Data preprocessing
