@@ -58,10 +58,10 @@ logs/
 *.tmp
 *.temp
 
-# Data files (optional - uncomment if you don't want to track data)
-# *.csv
-# *.xlsx
-# *.json
+# Data files
+*.csv
+*.xlsx
+*.json
 
 # Model files
 *.pkl

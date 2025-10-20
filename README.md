@@ -30,18 +30,18 @@ This project provides a comprehensive **Interactive Dashboard** for **Customer C
 
 ## Quick Start
 
-### Option 1: Easy Launch (Recommended)
+### Option 1: Streamlit Cloud (Recommended)
+1. Fork this repository
+2. Go to [Streamlit Cloud](https://share.streamlit.io/)
+3. Connect your GitHub account
+4. Deploy the app with one click
+
+### Option 2: Local Setup
 ```bash
-# Clone or download the project
-# Navigate to project directory
+# Clone the repository
+git clone https://github.com/DanielDemoz/ecommerce-churn-analysis.git
 cd ecommerce-churn-analysis
 
-# Run the dashboard launcher
-python run_dashboard.py
-```
-
-### Option 2: Manual Setup
-```bash
 # Install dependencies
 pip install -r requirements.txt
 
@@ -49,22 +49,18 @@ pip install -r requirements.txt
 streamlit run dashboard.py
 ```
 
-### Option 3: Using Streamlit Cloud
-1. Upload your project to GitHub
-2. Connect to [Streamlit Cloud](https://share.streamlit.io/)
-3. Deploy with one click!
 
 ---
 
 ## Dataset
-**File:** `E Commerce Dataset.xlsx` or `E Commerce Dataset.csv`
-
-The dataset contains customer attributes:
+The dashboard works with e-commerce customer datasets containing the following attributes:
 - **Demographics:** City Tier, Gender, Marital Status
 - **Behavioral:** Hours Spent on App, Preferred Login Device
 - **Transactional:** Order Count, Payment Mode, Order Categories
 - **Satisfaction:** Satisfaction Score, Complaints
 - **Target:** Churn Status (0/1)
+
+*Note: The dashboard will automatically create demo data if no dataset is provided.*
 
 ---
 
