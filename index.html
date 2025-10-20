@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-commerce Churn Analysis Dashboard</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            padding: 3rem;
+            max-width: 800px;
+            text-align: center;
+            margin: 2rem;
+        }
+        .logo {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 1rem;
+            font-size: 2.5rem;
+        }
+        .subtitle {
+            color: #666;
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+        }
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        .feature {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+        .feature-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        .launch-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 2rem 0;
+        }
+        .btn {
+            background: #667eea;
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 10px;
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .btn:hover {
+            background: #5a6fd8;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+        .btn-secondary {
+            background: #6c757d;
+        }
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+        .instructions {
+            background: #e9ecef;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 2rem 0;
+            text-align: left;
+        }
+        .instructions h3 {
+            margin-top: 0;
+            color: #495057;
+        }
+        .instructions ol {
+            color: #6c757d;
+        }
+        .footer {
+            margin-top: 2rem;
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">📊</div>
+        <h1>E-commerce Churn Analysis Dashboard</h1>
+        <p class="subtitle">Interactive Machine Learning Dashboard for Customer Retention</p>
+        
+        <div class="features">
+            <div class="feature">
+                <div class="feature-icon">🤖</div>
+                <h3>ML Models</h3>
+                <p>Random Forest & Logistic Regression for churn prediction</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">📈</div>
+                <h3>Analytics</h3>
+                <p>Comprehensive data analysis and visualizations</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">👥</div>
+                <h3>Segmentation</h3>
+                <p>Customer segmentation and behavioral analysis</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">🔮</div>
+                <h3>Predictions</h3>
+                <p>Real-time churn risk assessment</p>
+            </div>
+        </div>
+        
+        <div class="launch-buttons">
+            <a href="http://localhost:8501" class="btn" onclick="alert('Make sure the dashboard is running!')">
+                🚀 Launch Dashboard
+            </a>
+            <a href="https://github.com" class="btn btn-secondary">
+                📁 View Source
+            </a>
+        </div>
+        
+        <div class="instructions">
+            <h3>🚀 Quick Start Instructions:</h3>
+            <ol>
+                <li><strong>Windows:</strong> Double-click <code>launch_dashboard.bat</code></li>
+                <li><strong>Mac/Linux:</strong> Run <code>./launch_dashboard.sh</code></li>
+                <li><strong>Manual:</strong> Run <code>python run_dashboard.py</code></li>
+                <li>Open your browser to <code>http://localhost:8501</code></li>
+            </ol>
+        </div>
+        
+        <div class="instructions">
+            <h3>📋 Requirements:</h3>
+            <ul>
+                <li>Python 3.8+ installed</li>
+                <li>Required packages: <code>pip install -r requirements.txt</code></li>
+                <li>Dataset file: <code>E Commerce Dataset.xlsx</code> (or demo data will be created)</li>
+            </ul>
+        </div>
+        
+        <div class="footer">
+            <p>🎯 Make data-driven decisions to reduce customer churn and boost retention!</p>
+            <p>Built with ❤️ using Streamlit, Plotly, and Scikit-learn</p>
+        </div>
+    </div>
+</body>
+</html>
