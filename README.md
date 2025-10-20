@@ -1,14 +1,16 @@
 # E-commerce Churn Analysis Dashboard
 
-[![Live Dashboard](https://img.shields.io/badge/Live%20Dashboard-Streamlit%20Cloud-blue?style=for-the-badge&logo=streamlit)](https://your-dashboard-url.streamlit.app)
+[![Live Dashboard](https://img.shields.io/badge/Live%20Dashboard-Streamlit%20Cloud-blue?style=for-the-badge&logo=streamlit)](https://share.streamlit.io)
 [![Python](https://img.shields.io/badge/Python-3.8+-green?style=for-the-badge&logo=python)](https://python.org)
 [![Streamlit](https://img.shields.io/badge/Streamlit-1.28+-red?style=for-the-badge&logo=streamlit)](https://streamlit.io)
 
 ## Interactive Dashboard Access
 
-**Live Demo:** [Launch Interactive Dashboard](https://your-dashboard-url.streamlit.app)
+**Deploy to Streamlit Cloud:** [Deploy Now](https://share.streamlit.io)
 
-*Experience the full interactive dashboard with real-time data visualization, machine learning predictions, and customer segmentation analysis.*
+*Deploy this dashboard to Streamlit Cloud for free and get a live URL. The dashboard includes real-time data visualization, machine learning predictions, and customer segmentation analysis.*
+
+**Local Testing:** Run `streamlit run dashboard.py` and visit http://localhost:8501
 
 ---
 
