@@ -84,17 +84,18 @@ def load_data():
 @st.cache_data
 def get_model_predictions(df):
     """Train models and get predictions"""
-    # Prepare features
-    X = df.drop(['Churn', 'CustomerID'], axis=1, errors='ignore')
+    # Prepare features - use only numerical columns for simplicity
+    numerical_cols = df.select_dtypes(include=[np.number]).columns.tolist()
+    if 'Churn' in numerical_cols:
+        numerical_cols.remove('Churn')
+    if 'CustomerID' in numerical_cols:
+        numerical_cols.remove('CustomerID')
+    
+    X = df[numerical_cols]
     y = df['Churn']
     
-    # Encode categorical variables
-    categorical_cols = X.select_dtypes(include=['object']).columns
-    le_dict = {}
-    for col in categorical_cols:
-        le = LabelEncoder()
-        X[col] = le.fit_transform(X[col].astype(str))
-        le_dict[col] = le
+    # Handle any remaining missing values
+    X = X.fillna(X.mean())
     
     # Split data
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
@@ -120,7 +121,7 @@ def get_model_predictions(df):
         'lr_pred': lr_pred,
         'y_test': y_test,
         'feature_names': X.columns.tolist(),
-        'label_encoders': le_dict
+        'label_encoders': {}  # No categorical encoding needed
     }
 
 def main():
@@ -475,98 +476,97 @@ def show_customer_segmentation(df):
 
 def show_predictions(df):
     """Display prediction interface"""
-    st.header("🔮 Customer Churn Prediction")
+    st.header("Customer Churn Prediction")
     
     # Get model results
     model_results = get_model_predictions(df)
     
-    st.subheader("📝 Enter Customer Information")
+    st.subheader("Enter Customer Information")
     
-    # Create input form
+    # Get the feature names that the model was trained on
+    feature_names = model_results['feature_names']
+    
+    # Create input form based on available numerical features
     col1, col2 = st.columns(2)
     
+    input_data = {}
+    
     with col1:
-        tenure = st.slider("Tenure (months)", 0, 60, 12)
-        satisfaction = st.slider("Satisfaction Score", 1, 5, 3)
-        hours_app = st.slider("Hours Spent on App", 0, 5, 2)
-        devices = st.slider("Number of Devices", 1, 6, 3)
+        if 'Tenure' in feature_names:
+            input_data['Tenure'] = st.slider("Tenure (months)", 0, 60, 12)
+        if 'SatisfactionScore' in feature_names:
+            input_data['SatisfactionScore'] = st.slider("Satisfaction Score", 1, 5, 3)
+        if 'HourSpendOnApp' in feature_names:
+            input_data['HourSpendOnApp'] = st.slider("Hours Spent on App", 0, 5, 2)
+        if 'NumberOfDeviceRegistered' in feature_names:
+            input_data['NumberOfDeviceRegistered'] = st.slider("Number of Devices", 1, 6, 3)
     
     with col2:
-        warehouse_home = st.slider("Warehouse to Home Distance", 5, 50, 15)
-        addresses = st.slider("Number of Addresses", 1, 10, 3)
-        order_hike = st.slider("Order Amount Hike (%)", 10, 25, 15)
-        cashback = st.slider("Cashback Amount", 0, 100, 20)
+        if 'WarehouseToHome' in feature_names:
+            input_data['WarehouseToHome'] = st.slider("Warehouse to Home Distance", 5, 50, 15)
+        if 'NumberOfAddress' in feature_names:
+            input_data['NumberOfAddress'] = st.slider("Number of Addresses", 1, 10, 3)
+        if 'OrderAmountHikeFromlastYear' in feature_names:
+            input_data['OrderAmountHikeFromlastYear'] = st.slider("Order Amount Hike (%)", 10, 25, 15)
+        if 'CashbackAmount' in feature_names:
+            input_data['CashbackAmount'] = st.slider("Cashback Amount", 0, 100, 20)
     
-    # Categorical inputs
-    col3, col4 = st.columns(2)
-    
-    with col3:
-        login_device = st.selectbox("Preferred Login Device", df['PreferredLoginDevice'].unique())
-        payment_mode = st.selectbox("Preferred Payment Mode", df['PreferredPaymentMode'].unique())
-    
-    with col4:
-        gender = st.selectbox("Gender", df['Gender'].unique())
-        order_cat = st.selectbox("Preferred Order Category", df['PreferedOrderCat'].unique())
+    # Add any remaining features with default values
+    for feature in feature_names:
+        if feature not in input_data:
+            if feature in df.columns:
+                default_val = df[feature].mean() if df[feature].dtype in ['int64', 'float64'] else 0
+                input_data[feature] = default_val
     
     # Predict button
-    if st.button("🔮 Predict Churn Risk"):
-        # Prepare input data
-        input_data = pd.DataFrame({
-            'Tenure': [tenure],
-            'SatisfactionScore': [satisfaction],
-            'HourSpendOnApp': [hours_app],
-            'NumberOfDeviceRegistered': [devices],
-            'WarehouseToHome': [warehouse_home],
-            'NumberOfAddress': [addresses],
-            'OrderAmountHikeFromlastYear': [order_hike],
-            'CashbackAmount': [cashback],
-            'PreferredLoginDevice': [login_device],
-            'PreferredPaymentMode': [payment_mode],
-            'Gender': [gender],
-            'PreferedOrderCat': [order_cat]
-        })
+    if st.button("Predict Churn Risk"):
+        # Create DataFrame with the exact features the model expects
+        prediction_data = pd.DataFrame([input_data])
         
-        # Encode categorical variables
-        for col, le in model_results['label_encoders'].items():
-            if col in input_data.columns:
-                input_data[col] = le.transform(input_data[col].astype(str))
+        # Ensure the DataFrame has the same columns as the training data
+        prediction_data = prediction_data.reindex(columns=feature_names, fill_value=0)
         
-        # Make prediction
-        rf_pred = model_results['rf_model'].predict(input_data)[0]
-        rf_prob = model_results['rf_model'].predict_proba(input_data)[0]
-        
-        # Display results
-        st.subheader("🎯 Prediction Results")
-        
-        col1, col2, col3 = st.columns(3)
-        
-        with col1:
-            if rf_pred == 1:
-                st.error("🚨 **HIGH CHURN RISK**")
+        try:
+            # Make prediction
+            rf_pred = model_results['rf_model'].predict(prediction_data)[0]
+            rf_prob = model_results['rf_model'].predict_proba(prediction_data)[0]
+            
+            # Display results
+            st.subheader("Prediction Results")
+            
+            col1, col2, col3 = st.columns(3)
+            
+            with col1:
+                if rf_pred == 1:
+                    st.error("HIGH CHURN RISK")
+                else:
+                    st.success("LOW CHURN RISK")
+            
+            with col2:
+                st.metric(
+                    label="Churn Probability",
+                    value=f"{rf_prob[1]:.1%}",
+                    delta=None
+                )
+            
+            with col3:
+                st.metric(
+                    label="Retention Probability",
+                    value=f"{rf_prob[0]:.1%}",
+                    delta=None
+                )
+            
+            # Risk level
+            if rf_prob[1] > 0.7:
+                st.warning("High Risk: Immediate intervention recommended")
+            elif rf_prob[1] > 0.4:
+                st.info("Medium Risk: Monitor closely and consider retention strategies")
             else:
-                st.success("✅ **LOW CHURN RISK**")
-        
-        with col2:
-            st.metric(
-                label="Churn Probability",
-                value=f"{rf_prob[1]:.1%}",
-                delta=None
-            )
-        
-        with col3:
-            st.metric(
-                label="Retention Probability",
-                value=f"{rf_prob[0]:.1%}",
-                delta=None
-            )
-        
-        # Risk level
-        if rf_prob[1] > 0.7:
-            st.warning("⚠️ **High Risk**: Immediate intervention recommended")
-        elif rf_prob[1] > 0.4:
-            st.info("⚠️ **Medium Risk**: Monitor closely and consider retention strategies")
-        else:
-            st.success("✅ **Low Risk**: Customer appears stable")
+                st.success("Low Risk: Customer appears stable")
+                
+        except Exception as e:
+            st.error(f"Prediction error: {str(e)}")
+            st.info("Please try again or contact support if the issue persists.")
 
 if __name__ == "__main__":
     main()
