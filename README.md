@@ -1,14 +1,14 @@
 # E-commerce Churn Analysis Dashboard
 
-[![Live Dashboard](https://img.shields.io/badge/Live%20Dashboard-Streamlit%20Cloud-blue?style=for-the-badge&logo=streamlit)](https://share.streamlit.io)
+[![Live Dashboard](https://img.shields.io/badge/Live%20Dashboard-Streamlit%20Cloud-blue?style=for-the-badge&logo=streamlit)](https://ecommerce-churn-analysis-hmpsaq7em9psjb8ivlzfzy.streamlit.app/)
 [![Python](https://img.shields.io/badge/Python-3.8+-green?style=for-the-badge&logo=python)](https://python.org)
 [![Streamlit](https://img.shields.io/badge/Streamlit-1.28+-red?style=for-the-badge&logo=streamlit)](https://streamlit.io)
 
 ## Interactive Dashboard Access
 
-**Deploy to Streamlit Cloud:** [Deploy Now](https://share.streamlit.io)
+**Live Demo:** [Launch Interactive Dashboard](https://ecommerce-churn-analysis-hmpsaq7em9psjb8ivlzfzy.streamlit.app/)
 
-*Deploy this dashboard to Streamlit Cloud for free and get a live URL. The dashboard includes real-time data visualization, machine learning predictions, and customer segmentation analysis.*
+*Experience the full interactive dashboard with real-time data visualization, machine learning predictions, and customer segmentation analysis. No installation required - just click and explore!*
 
 **Local Testing:** Run `streamlit run dashboard.py` and visit http://localhost:8501
 
@@ -30,13 +30,18 @@ This project provides a comprehensive **Interactive Dashboard** for **Customer C
 
 ## Quick Start
 
-### Option 1: Streamlit Cloud (Recommended)
+### Option 1: Live Demo (Recommended)
+**Click here to access the live dashboard:** [Launch Dashboard](https://ecommerce-churn-analysis-hmpsaq7em9psjb8ivlzfzy.streamlit.app/)
+
+*No installation required - explore the interactive dashboard immediately!*
+
+### Option 2: Deploy Your Own Copy
 1. Fork this repository
 2. Go to [Streamlit Cloud](https://share.streamlit.io/)
 3. Connect your GitHub account
 4. Deploy the app with one click
 
-### Option 2: Local Setup
+### Option 3: Local Setup
 ```bash
 # Clone the repository
 git clone https://github.com/DanielDemoz/ecommerce-churn-analysis.git
