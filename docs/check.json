@@ -1,0 +1,19 @@
+{
+ "rows": 1000,
+ "churn_rate": 0.433,
+ "majority_accuracy": 0.567,
+ "random_forest": {
+  "accuracy": 0.588,
+  "auc": 0.631
+ },
+ "logistic_regression": {
+  "accuracy": 0.568,
+  "auc": 0.573
+ },
+ "planted_rule": {
+  "description": "satisfaction 2 or lower, a complaint, or tenure of 6 months or less",
+  "share_of_customers": 0.696,
+  "churn_if_rule": 0.539,
+  "churn_if_not": 0.191
+ }
+}

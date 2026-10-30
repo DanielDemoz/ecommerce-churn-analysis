@@ -72,3 +72,5 @@ logs/
 # Cache
 .cache/
 .pytest_cache/
+
+!docs/*.json
