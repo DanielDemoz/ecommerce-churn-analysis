@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>E-commerce Churn Dashboard | Daniel S. Demoz</title>
+  <meta name="description" content="A Streamlit churn dashboard, with an honest note on the data it runs on and what its models can show.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Manrope:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://www.danieldemoz.com/kit/rai.css">
+</head>
+<body>
+  <div class="rai-top"><div class="wrap">
+    <span>Daniel S. Demoz · Responsible AI in practice</span>
+    <span><a href="https://www.danieldemoz.com/projects">All projects</a> &nbsp;·&nbsp; <a href="https://github.com/DanielDemoz/ecommerce-churn-analysis">Code</a></span>
+  </div></div>
+
+  <header class="rai-hero"><div class="wrap">
+    <p class="eyebrow">E-commerce churn</p>
+    <h1>A churn dashboard, and an honest look at the data behind it</h1>
+    <p class="lead">A Streamlit app for exploring and scoring e-commerce churn. This page explains what it does, which data the hosted version runs on, and what that means for its results.</p>
+    <div class="chips">
+      <span class="chip status">Working app · demo data</span>
+      <span class="chip">Streamlit</span>
+      <span class="chip">Planted patterns disclosed</span>
+      <span class="chip">Real data not included</span>
+    </div>
+  </div></header>
+
+  <nav class="steps" aria-label="Sections"><div class="wrap">
+    <a href="#app"><b>1</b>The app</a>
+    <a href="#data"><b>2</b>Which data</a>
+    <a href="#real"><b>3</b>Before real use</a>
+    <a href="#framework"><b>4</b>Reliable AI checklist</a>
+  </div></nav>
+
+  <main>
+    <section id="app"><div class="wrap">
+      <h2>What the app does</h2>
+      <p class="sub">A Streamlit dashboard in <code>dashboard.py</code> for e-commerce churn.</p>
+      <div class="grid g3" style="margin-top:18px"><div class="card"><h3>Explore</h3><p>Churn rates by tenure, satisfaction, device, payment method and other fields.</p></div><div class="card"><h3>Model</h3><p>Random forest and logistic regression, with accuracy, a confusion matrix and feature importance.</p></div><div class="card"><h3>Score one customer</h3><p>Enter a customer profile and get a churn probability.</p></div></div>
+      <p style="margin-top:14px"><a href="https://ecommerce-churn-analysis-hmpsaq7em9psjb8ivlzfzy.streamlit.app/">Open the Streamlit app</a> (it may take a minute to wake up).</p>
+    </div></section>
+    <section id="data" style="background:var(--white);border-top:1px solid var(--line);border-bottom:1px solid var(--line)"><div class="wrap">
+      <h2>Which data it runs on</h2>
+      <div class="note warn" style="margin-top:6px"><b>The real dataset is not in this repository.</b> The app looks for a file named "E Commerce Dataset.xlsx". When it is missing, the app generates 1,000 demo customers instead. The hosted app runs on that demo data.</div>
+      <div class="grid g2" style="margin-top:18px"><div class="card" style="overflow-x:auto"><h3>Models on the demo data</h3><table class="t"><tr><th>Model</th><th>Accuracy</th><th>AUC</th></tr><tr><td>Always guess "stays"</td><td>56.7%</td><td>0.500</td></tr><tr><td>Logistic regression</td><td>56.8%</td><td>0.573</td></tr><tr class="hl"><td>Random forest</td><td>58.8%</td><td>0.631</td></tr></table><p style="font-size:.88rem;color:var(--muted);margin-top:10px">5-fold cross-validation on the 1,000 generated customers.</p></div><div class="card"><h3>The built-in pattern</h3><p>The generator raises churn for customers with satisfaction 2 or lower, a complaint, or tenure of 6 months or less. 70% of demo customers match.</p><p>Churn is 54% for them and 19% for the rest. Any "key churn drivers" the app finds on demo data are these planted rules.</p></div></div>
+      <div class="note info"><b>Honest finding:</b> on demo data the models barely beat guessing. The 95.8% accuracy and churn drivers in the earlier README could not be reproduced from this repository, so they were removed.</div>
+    </div></section>
+    <section id="real"><div class="wrap">
+      <h2>Before using it on real customers</h2>
+      <div class="grid g2" style="margin-top:18px"><div class="card"><h3>Data</h3><ul style="margin:0;padding-left:18px"><li>Load real customer records, and say where they came from and under what licence.</li><li>Define churn from later behaviour, such as no order in the next 90 days.</li><li>Test on a later time period, the way the model would be used.</li></ul></div><div class="card"><h3>Use</h3><ul style="margin:0;padding-left:18px"><li>Check accuracy and false alarms by customer group, such as city tier and gender.</li><li>Use scores to choose who gets a retention offer, not to treat anyone worse.</li><li>Measure the offer with a holdout group, so the impact is known, not assumed.</li></ul></div></div>
+    </div></section>
+    <section id="framework" style="background:var(--white);border-top:1px solid var(--line);border-bottom:1px solid var(--line)"><div class="wrap">
+      <h2>Reliable AI checklist</h2>
+      <p class="sub">The six questions of the <a href="https://www.danieldemoz.com/#method">Reliable AI Adoption Framework</a>, answered for this project.</p>
+      <div class="fw" style="margin-top:18px">
+        <div class="card"><h3>Business problem</h3><p>Spot customers likely to stop buying, so a retention team can reach them first.</p></div>
+        <div class="card"><h3>Data readiness</h3><p>The real dataset is not included. The hosted app runs on generated demo data with planted patterns.</p></div>
+        <div class="card"><h3>Governance and risk</h3><p>Scores from demo data must never be presented as customer insight. The app now says which data it is using.</p></div>
+        <div class="card"><h3>Technology and tools</h3><p>Random forest and logistic regression in Streamlit. Simple and inspectable.</p></div>
+        <div class="card"><h3>People and adoption</h3><p>A retention lead reviews the list and chooses the offer. The model only ranks.</p></div>
+        <div class="card"><h3>Outcomes and monitoring</h3><p>On real data, compare predicted and actual churn each quarter, by customer group.</p></div>
+      </div>
+    </div></section>
+
+  </main>
+
+  <footer class="rai-foot"><div class="wrap">
+    <span>Built by Daniel S. Demoz · <a href="https://www.danieldemoz.com">danieldemoz.com</a></span>
+    <span>Hosted app runs on generated demo data</span>
+  </div></footer>
+
+</body>
+</html>

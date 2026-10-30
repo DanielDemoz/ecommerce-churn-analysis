@@ -105,7 +105,7 @@ def load_data():
             df = pd.read_csv("E Commerce Dataset.csv")
         except:
             # If no dataset is available, create demo data inline
-            st.warning("No dataset found. Creating demo data for demonstration purposes...")
+            st.warning("No dataset found, so this app is running on 1,000 generated demo customers with churn patterns built in. Results describe the generator, not real customers.")
             try:
                 df = create_demo_data_inline()
                 st.success("Demo dataset created successfully!")
